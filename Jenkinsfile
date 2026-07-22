@@ -2,16 +2,16 @@
 
 pipeline {
     agent any
-    
+
     environment {
-        // Update the main app image name to match the deployment file
         DOCKER_IMAGE_NAME = 'ybharamb/bankapp'
         DOCKER_IMAGE_TAG = "${BUILD_NUMBER}"
         GITHUB_CREDENTIALS = credentials('github-credentials')
         GIT_BRANCH = "master"
     }
-    
+
     stages {
+
         stage('Cleanup Workspace') {
             steps {
                 script {
@@ -19,15 +19,15 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Clone Repository') {
             steps {
                 script {
-                    clone("https://github.com/yogeshb01/bank-application.git","master")
+                    clone("https://github.com/yogeshb01/bank-application.git", "master")
                 }
             }
         }
-        
+
         stage('Build Docker Images') {
             parallel {
                 stage('Build Main App Image') {
@@ -42,8 +42,9 @@ pipeline {
                         }
                     }
                 }
-                
-               
+            }
+        }
+
         stage('Run Unit Tests') {
             steps {
                 script {
@@ -51,18 +52,15 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Security Scan with Trivy') {
             steps {
                 script {
-                    // Create directory for results
-                  
                     trivy_scan()
-                    
                 }
             }
         }
-        
+
         stage('Push Docker Images') {
             parallel {
                 stage('Push Main App Image') {
@@ -76,9 +74,7 @@ pipeline {
                         }
                     }
                 }
-            }    
-                
-        
-        // Add this new stage
-        
+            }
+        }
+    }
 }
