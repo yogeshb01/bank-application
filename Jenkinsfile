@@ -7,7 +7,7 @@ pipeline {
         DOCKER_IMAGE_NAME = 'ybharamb/bankapp'
         DOCKER_IMAGE_TAG = "${BUILD_NUMBER}"
         GITHUB_CREDENTIALS = credentials('github-credentials')
-        GIT_BRANCH = "master"
+        GIT_BRANCH = "main"
     }
 
     stages {
