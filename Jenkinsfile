@@ -1,87 +1,84 @@
 @Library('Shared') _
+
 pipeline {
     agent any
     
-    environment{
-        SONAR_HOME = tool "Sonar"
-    }
-    
-    parameters {
-        string(name: 'DOCKER_TAG', defaultValue: '', description: 'Setting docker image for latest push')
+    environment {
+        // Update the main app image name to match the deployment file
+        DOCKER_IMAGE_NAME = 'ybharamb/bankapp'
+        DOCKER_IMAGE_TAG = "${BUILD_NUMBER}"
+        GITHUB_CREDENTIALS = credentials('github-credentials')
+        GIT_BRANCH = "master"
     }
     
     stages {
-        
-        stage("Workspace cleanup"){
-            steps{
-                script{
-                    cleanWs()
-                }
-            }
-        }
-        
-        stage('Git: Code Checkout') {
+        stage('Cleanup Workspace') {
             steps {
-                script{
-                    code_checkout("https://github.com/DevMadhup/Springboot-BankApp.git","DevOps")
+                script {
+                    clean_ws()
                 }
             }
         }
         
-        stage("Trivy: Filesystem scan"){
-            steps{
-                script{
+        stage('Clone Repository') {
+            steps {
+                script {
+                    clone("https://github.com/yogeshb01/bank-application.git","master")
+                }
+            }
+        }
+        
+        stage('Build Docker Images') {
+            parallel {
+                stage('Build Main App Image') {
+                    steps {
+                        script {
+                            docker_build(
+                                imageName: env.DOCKER_IMAGE_NAME,
+                                imageTag: env.DOCKER_IMAGE_TAG,
+                                dockerfile: 'Dockerfile',
+                                context: '.'
+                            )
+                        }
+                    }
+                }
+                
+               
+        stage('Run Unit Tests') {
+            steps {
+                script {
+                    run_tests()
+                }
+            }
+        }
+        
+        stage('Security Scan with Trivy') {
+            steps {
+                script {
+                    // Create directory for results
+                  
                     trivy_scan()
-                }
-            }
-        }
-
-        stage("OWASP: Dependency check"){
-            steps{
-                script{
-                    owasp_dependency()
+                    
                 }
             }
         }
         
-        stage("SonarQube: Code Analysis"){
-            steps{
-                script{
-                    sonarqube_analysis("Sonar","bankapp","bankapp")
+        stage('Push Docker Images') {
+            parallel {
+                stage('Push Main App Image') {
+                    steps {
+                        script {
+                            docker_push(
+                                imageName: env.DOCKER_IMAGE_NAME,
+                                imageTag: env.DOCKER_IMAGE_TAG,
+                                credentials: 'docker-credentials'
+                            )
+                        }
+                    }
                 }
-            }
-        }
+                
+                
         
-        stage("SonarQube: Code Quality Gates"){
-            steps{
-                script{
-                    sonarqube_code_quality()
-                }
-            }
-        }
-
-        stage("Docker: Build Images"){
-            steps{
-                script{
-                    docker_build("bankapp","${params.DOCKER_TAG}","madhupdevops")
-                }
-            }
-        }
+        // Add this new stage
         
-        stage("Docker: Push to DockerHub"){
-            steps{
-                script{
-                    docker_push("bankapp","${params.DOCKER_TAG}","madhupdevops")
-                }
-            }
-        }
-    }
-    post{
-        success{
-            archiveArtifacts artifacts: '*.xml', followSymlinks: false
-            build job: "BankApp-CD", parameters: [
-                string(name: 'DOCKER_TAG', value: "${params.DOCKER_TAG}")
-            ]
-        }
-    }
 }
