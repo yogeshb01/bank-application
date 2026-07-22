@@ -12,10 +12,10 @@ MAINTAINER Yogesh Bharambe<yogesh01bharambe@gmail.com>
 LABEL app=bankapp
 
 # Set working directory
-WORKDIR /app-code/src
-
+WORKDIR /app-code
 # Copy source code from local to container
-COPY . /app-code/src
+
+COPY app-code/ .
 
 # Build application and skip test cases
 RUN mvn clean install -DskipTests=true
