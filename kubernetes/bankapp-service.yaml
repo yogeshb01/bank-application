@@ -4,14 +4,12 @@ metadata:
   name: bankapp-service
   namespace: bankapp-namespace
   labels:
-    app: bankapp
-  
-spec:
-  type: NodePort  # Changed to LoadBalancer
-  selector:
     app: bankapp-deploy
+spec:
+  type: ClusterIP # Ingress with target-type: ip routes directly to Pod IPs
+  selector:
+    app: bankapp-deploy # Correctly matches your running pods!
   ports:
     - protocol: TCP
-      port: 8080       # Expose on port 8080
-      targetPort: 8080
-      nodePort: 30776 # Target the app's port
+      port: 8080       # Port exposed to Ingress
+      targetPort: 8080 # Port your Spring Boot / app container runs on
