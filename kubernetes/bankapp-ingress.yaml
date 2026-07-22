@@ -6,6 +6,9 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
+    # Tells AWS Controller to attach to the ALB Terraform already built
+    alb.ingress.kubernetes.io/group.name: "shared-alb"
+    alb.ingress.kubernetes.io/group.order: "10"
 spec:
   ingressClassName: alb
   rules:
