@@ -56,7 +56,11 @@ pipeline {
         stage('Security Scan with Trivy') {
             steps {
                 script {
-                    trivy_scan()
+                    //trivy_scan()
+                    sh '''
+                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image ybharamb/bankapp:${BUILD_NUMBER}
+                    '''
+
                 }
             }
         }
