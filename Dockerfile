@@ -27,11 +27,12 @@ RUN mvn clean install -DskipTests=true
 # Import small size java image
 FROM openjdk:17.0.1-jdk-slim as deployer
 
+WORKDIR /app
 # Copy build from stage 1 (builder)
-COPY --from=builder /app-code//src/target/*.jar /src/target/bankapp.jar
+COPY --from=builder /app-code/target/*.jar /app/bankapp.jar
 
 # Expose application port 
 EXPOSE 8080
 
 # Start the application
-ENTRYPOINT ["java", "-jar", "/src/target/bankapp.jar"]
+ENTRYPOINT ["java", "-jar", "/app/bankapp.jar"]
