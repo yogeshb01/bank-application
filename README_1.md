@@ -71,7 +71,7 @@ Before you begin, ensure you have the following CLI tools installed and configur
 
 ---
 
-## 🚀 Step-by-Step Deployment Guide
+# 🚀 Step-by-Step Deployment Guide
 
 ---
 
@@ -85,7 +85,7 @@ git clone [https://github.com/yogeshb01/bank-application.git](https://github.com
 cd bank-application
 
 # 2. Navigate to the Terraform directory
-cd terraform
+cd terraform/EKS-Infra
 
 # 3. Initialize Terraform plugins and backend
 terraform init
@@ -110,7 +110,7 @@ aws eks update-kubeconfig --region <your-aws-region> --name <cluster-name>
 
 ---
 
-# 🌐 Step 2: Accessing ArgoCD via AWS Application Load Balancer (ALB)
+## 🌐 Step 2: Accessing ArgoCD via AWS Application Load Balancer (ALB)
 
 Access the dashboard directly through your AWS load balancer endpoint.
 
@@ -139,7 +139,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 ---
 
-# 🚀 Step 3: Deploying the Application via ArgoCD GitOps
+## 🚀 Step 3: Deploying the Application via ArgoCD GitOps
 
 ## 📌 Option A: Apply Declarative GitOps Manifest
 
@@ -190,7 +190,7 @@ Click **Create App** and wait for the deployment to complete.
 
 ---
 
-# ✅ Step 4: Accessing the Live Banking Application
+## ✅ Step 4: Accessing the Live Banking Application
 
 Once ArgoCD finishes syncing, the AWS Load Balancer Controller automatically provisions a dedicated AWS ALB for public user access.
 
@@ -208,6 +208,126 @@ kubectl get ingress bank-app-ingress -n bank-app -o jsonpath='{.status.loadBalan
 - Check the **transaction history** to verify the transactions.  
 
 ---
+
+# 🤖 Jenkins Setup Steps 
+
+Jenkins is responsible for automating the complete Continuous Integration and Continuous Deployment (CI/CD) pipeline.
+
+```bash
+# 1. Clone the repository
+git clone [https://github.com/yogeshb01/bank-application.git](https://github.com/yogeshb01/bank-application.git)
+cd bank-application
+
+# 2. Navigate to the Terraform directory
+cd terraform/Jenkins-Server
+
+# 3. Initialize Terraform plugins and backend
+terraform init
+
+# 4. Preview infrastructure plan
+terraform plan
+
+# 5. Provision the infrastructure on AWS
+terraform apply
+```
+## Steps to Access Jenkins & Install Plugins
+
+#### 1. **Open Jenkins in Browser:**
+> Use your public IP with port 8080:
+>**http://<public_IP>:8080**
+
+#### 2. **Initial Admin password:**
+> Start the service and get the Jenkins initial admin password:
+> ```bash
+> sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+> ```
+
+#### 3. **Start Jenkins (*If Not Running*):**
+> Get the Jenkins initial admin password:
+> ```bash
+> sudo systemctl enable jenkins
+> sudo systemctl restart jenkins
+> ```
+#### 4. **Install Essential Plugins:**
+> - Navigate to:
+> **Manage Jenkins → Plugins → Available Plugins**<br/>
+> - Search and install the following:<br/>
+>   - **Docker Pipeline**<br/>
+>   - **Pipeline View**
+
+
+#### 5. **Set Up Docker & GitHub Credentials in Jenkins (Global Credentials)**<br/>
+>
+> - GitHub Credentials:
+>   - Go to:
+**Jenkins → Manage Jenkins → Credentials → (Global) → Add Credentials**
+> - Use:
+>   - Kind: **Username with password**
+>   - ID: **github-credentials**<br/>
+
+
+> - DockerHub Credentials:
+> Go to the same Global Credentials section
+> - Use:
+>   - Kind: **Username with password**
+>   - ID: **docker-hub-credentials**
+> [Notes:]
+> Use these IDs in your Jenkins pipeline for secure access to GitHub and DockerHub
+
+#### 6. Jenkins Shared Library Setup:
+> - `Configure Trusted Pipeline Library`:
+>   - Go to:
+> **Jenkins → Manage Jenkins → Configure System**
+> Scroll to Global Pipeline Libraries section
+>
+> - **Add a New Shared Library:** 
+> - **Name:** shared
+> - **Default Version:** main
+> - **Project Repository URL:** `https://github.com/<your user-name/jenkins-shared-libraries`.
+>
+> [Notes:] 
+> Make sure the repo contains a proper directory structure eq: vars/<br/>
+	
+#### 7. Setup Pipeline<br/>
+> - Create New Pipeline Job<br/>
+>   - **Name:** Bank-Application<br/>
+>   - **Type:** Pipeline<br/>
+> Press `Okay`<br/>
+
+> > In **General**<br/>
+> > - **Description:** Bank-Application<br/>
+> > - **Check the box:** `GitHub project`<br/>
+> > - **GitHub Repo URL:** `https://github.com/<your user-name/bank-application`<br/>
+>
+> > In **Trigger**<br/>
+> > - **Check the box:**`GitHub hook trigger for GITScm polling`<br/>
+>
+> > In **Pipeline**<br/>
+> > - **Definition:** `Pipeline script from SCM`<br/>
+> > - **SCM:** `Git`<br/>
+> > - **Repository URL:** `https://github.com/<your user-name/bank-application`<br/>
+> > - **Credentials:** `github-credentials`<br/>
+> > - **Branch:** master<br/>
+> > - **Script Path:** `Jenkinsfile`<br/>
+
+#### **Fork Required Repos**<br/>
+> > Fork App Repo:<br/>
+> > * Open the `Jenkinsfile`<br/>
+> > * Change the DockerHub username to yours<br/>
+>
+> > **Fork Shared Library Repo:**<br/>
+> > * Edit `vars/update_k8s_manifest.groovy`<br/>
+> > * Update with your `DockerHub username`<br/>
+> 
+> > **Setup Webhook**<br/>
+> > In GitHub:<br/>
+> >  * Go to **`Settings` → `Webhooks`**<br/>
+> >  * Add a new webhook pointing to your Jenkins URL<br/>
+> >  * Select: **`GitHub hook trigger for GITScm polling`** in Jenkins job<br/>
+>
+> > **Trigger the Pipeline**<br/>
+> > Click **`Build Now`** in Jenkins
+
 
 ## 🚀 **Project Expansion Ideas**
 - **Add AWS RDS:** Replace the local MySQL container with an **AWS RDS instance** for better scalability.  
