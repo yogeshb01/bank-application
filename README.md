@@ -280,6 +280,7 @@ terraform apply
 > - Use:
 >   - Kind: **Username with password**
 >   - ID: **docker-hub-credentials**
+> 
 > [Notes:]
 > Use these IDs in your Jenkins pipeline for secure access to GitHub and DockerHub
 
