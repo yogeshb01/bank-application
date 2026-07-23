@@ -40,21 +40,27 @@ All underlying cloud infrastructure — including networking, compute clusters, 
 
 ```text
 bank-application/
-├── terraform/                  # Infrastructure as Code (Terraform)
-│   ├── main.tf                 # Primary Terraform entry point
-│   ├── variables.tf            # Configurable variables
-│   ├── outputs.tf              # Infrastructure outputs (IPs, URIs)
-│   ├── providers.tf            # Cloud provider configurations
-│   └── modules/                # Reusable Terraform modules
-│       ├── vpc/                # Networking & Security Groups
-│       ├── eks/                # Kubernetes Cluster (or EC2/ECS)
-│       └── rds/                # Relational Database
-├── app/                        # Application Source Code
-│   ├── frontend/               # User interface source
-│   └── backend/                # Application API source
-├── kubernetes/                        # Kubernetes Manifests / Helm Charts
-├── Dockerfile                  # Application containerization definition
-└── README.md                   # Project documentation
+├── Dockerfile
+├── Jenkinsfile
+├── README.md			 # Project documentation
+├── app-code
+├── kubernetes
+└── terraform
+    ├── EKS-Infra
+    │   ├── argocd.tf
+    │   ├── eks.tf
+    │   ├── helm.tf
+    │   ├── iam.tf
+    │   ├── output.tf
+    │   ├── providers.tf
+    │   ├── variable.tf
+    │   └── vpc.tf
+    └── Jenkins-Server
+        ├── ec2.tf
+        ├── install_tools.sh
+        ├── outputs.tf
+        ├── provider.tf
+        └── var.tf              
 
 ```
 ---
