@@ -87,7 +87,8 @@ All AWS cloud infrastructure resources (VPC, EKS cluster, AWS Load Balancer Cont
 
 ```bash
 # 1. Clone the repository
-git clone [https://github.com/yogeshb01/bank-application.git](https://github.com/yogeshb01/bank-application.git)
+git clone https://github.com/yogeshb01/bank-application.git
+
 cd bank-application
 
 # 2. Navigate to the Terraform directory
