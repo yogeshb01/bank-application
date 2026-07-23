@@ -1,4 +1,4 @@
-# 🏦 Bank Application — Automated Infrastructure & Deployment.
+# 🏦 Bank Application — Automated Infrastructure & Deployment
 
 ![Terraform](https://img.shields.io/badge/IaC-Terraform-623CE4?style=for-the-badge&logo=terraform&logoColor=white)
 ![AWS](https://img.shields.io/badge/Cloud-AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
