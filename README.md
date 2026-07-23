@@ -200,6 +200,10 @@ Retrieve the Banking Application's public ALB DNS:
 kubectl get ingress bank-app-ingress -n bank-app -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 ```
 
+```bash
+http://<SHARED-ALB>.elb.amazonaws.com/argocd
+```
+
 ---
 
 ## 🎯 **Testing the Application**
