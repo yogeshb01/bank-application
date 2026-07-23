@@ -239,14 +239,13 @@ terraform apply
 #### 2. **Initial Admin password:**
 > Start the service and get the Jenkins initial admin password:
 > ```bash
-> sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+> sudo docker exec jenkins-server cat /var/jenkins_home/secrets/initialAdminPassword
 > ```
 
-#### 3. **Start Jenkins (*If Not Running*):**
+#### 3. **Start Jenkins Container(*If Not Running*):**
 > Get the Jenkins initial admin password:
 > ```bash
-> sudo systemctl enable jenkins
-> sudo systemctl restart jenkins
+> docker ps
 > ```
 #### 4. **Install Essential Plugins:**
 > - Navigate to:
@@ -331,7 +330,6 @@ terraform apply
 
 ## 🚀 **Project Expansion Ideas**
 - **Add AWS RDS:** Replace the local MySQL container with an **AWS RDS instance** for better scalability.  
-- **CI/CD Integration:** Automate Docker image builds and deployments using **GitHub Actions or Jenkins**.  
 - **Monitoring and Logging:** Add **Prometheus and Grafana** for monitoring and **Fluentd or Loki** for logging.  
 
 ---
