@@ -127,6 +127,14 @@ Access the dashboard directly through your AWS load balancer endpoint.
 kubectl get ingress argocd-server-ingress -n argocd -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 ```
 
+OR 
+
+In terraform output you will get shared_alb_dns_name. Copy that & run on browser 
+
+```bash
+http://shared_alb_dns_name/argocd
+```
+
 ### 2️⃣ Retrieve the Admin Password
 
 Fetch initial admin secret:
@@ -207,8 +215,10 @@ Retrieve the Banking Application's public ALB DNS:
 kubectl get ingress bank-app-ingress -n bank-app -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 ```
 
+OR 
+
 ```bash
-http://<SHARED-ALB>.elb.amazonaws.com/
+http://shared_alb_dns_name/
 ```
 
 ---
