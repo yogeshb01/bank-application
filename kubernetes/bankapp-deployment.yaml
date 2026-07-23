@@ -16,7 +16,7 @@ spec:
         app: bankapp-deploy
     spec:
       containers:
-      - image: ybharamb/bankapp:16
+      - image: ybharamb/bankapp:17
         name: bankapp
         ports:
         - containerPort: 8080
