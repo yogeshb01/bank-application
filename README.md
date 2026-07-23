@@ -31,8 +31,8 @@ All underlying cloud infrastructure — including networking, compute clusters, 
 * **Infrastructure as Code (IaC):** Terraform
 * **Cloud Provider:** Amazon Web Services (AWS)
 * **Containerization:** Docker
-* **Orchestration:** Kubernetes (AWS EKS / ECS)
-* **CI/CD Pipeline:** GitHub Actions / Jenkins
+* **Orchestration:** Kubernetes (AWS EKS )
+* **CI/CD Pipeline:**  Jenkins
 
 ---
 
