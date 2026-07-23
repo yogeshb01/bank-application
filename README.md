@@ -231,13 +231,18 @@ cd bank-application
 # 2. Navigate to the Terraform directory
 cd terraform/Jenkins-Server
 
-# 3. Initialize Terraform plugins and backend
+# 3. Create new ssh keygen named jenkins-server-key
+ssh-keygen
+
+# 4. Rename jenkins-server-key as jenkins-server-key.pem
+
+# 5. Initialize Terraform plugins and backend
 terraform init
 
-# 4. Preview infrastructure plan
+# 6. Preview infrastructure plan
 terraform plan
 
-# 5. Provision the infrastructure on AWS
+# 7. Provision the infrastructure on AWS
 terraform apply
 ```
 ## Steps to Access Jenkins & Install Plugins
