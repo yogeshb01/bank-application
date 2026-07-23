@@ -207,7 +207,7 @@ kubectl get ingress bank-app-ingress -n bank-app -o jsonpath='{.status.loadBalan
 ```
 
 ```bash
-http://<SHARED-ALB>.elb.amazonaws.com/argocd
+http://<SHARED-ALB>.elb.amazonaws.com/
 ```
 
 ---
