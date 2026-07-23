@@ -219,7 +219,7 @@ Jenkins is responsible for automating the complete Continuous Integration and Co
 
 ```bash
 # 1. Clone the repository
-git clone [https://github.com/yogeshb01/bank-application.git](https://github.com/yogeshb01/bank-application.git)
+git clone https://github.com/yogeshb01/bank-application.git
 cd bank-application
 
 # 2. Navigate to the Terraform directory
@@ -237,8 +237,8 @@ terraform apply
 ## Steps to Access Jenkins & Install Plugins
 
 #### 1. **Open Jenkins in Browser:**
-> Use your public IP with port 8080:
->**http://<public_IP>:8080**
+> Use your public IP with port 8081:
+>**http://<public_IP>:8081**
 
 #### 2. **Initial Admin password:**
 > Start the service and get the Jenkins initial admin password:
